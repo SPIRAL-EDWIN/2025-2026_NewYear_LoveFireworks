@@ -2,18 +2,20 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>To: My Love</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026: To My Love</title>
+    <!-- 引入高格调字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
     <style>
-        /* ================= 基础样式 ================= */
+        /* ================= 基础设置 ================= */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #020202;
+            background-color: #050505; /* 极深的夜空黑 */
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
         }
 
         canvas {
@@ -32,147 +34,345 @@
             width: 100%;
             height: 100%;
             z-index: 10;
+            pointer-events: none;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* === 照片容器 === */
+        #photo-container {
+            position: absolute;
+            top: 8%; /* 稍微靠上，留给倒计时空间 */
+            width: 85%;
+            max-width: 700px;
+            aspect-ratio: 16/9;
+            display: none;
             justify-content: center;
             align-items: center;
-            pointer-events: none; /* 默认让点击穿透，除了按钮 */
+            z-index: 15;
         }
 
-        /* 启动按钮样式 */
-        #start-btn {
-            pointer-events: auto; /* 允许点击 */
-            padding: 15px 40px;
-            font-size: 24px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #fff;
-            border-radius: 50px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        }
-
-        #start-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-        }
-
-        /* 倒计时样式 */
-        #countdown {
-            font-size: 15vw;
-            font-weight: 200;
-            color: #fff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            font-feature-settings: "tnum";
-            display: none; /* 初始隐藏 */
-        }
-
-        /* 祝福语样式 */
-        #message {
-            font-size: 8vw;
-            font-weight: 700;
-            text-align: center;
-            line-height: 1.2;
-            background: linear-gradient(45deg, #ff0055, #ffcc00, #00ddff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: absolute;
-        }
-
-        /* 背景微弱星空 */
-       .stars-bg {
-            position: absolute;
+        .memory-photo {
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at bottom, #1b2735 0%, #090a0f 100%);
-            z-index: 0;
+            object-fit: contain;
+            border-radius: 4px;
+            /* 给照片加一个柔和的辉光，像回忆一样 */
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1); 
+            opacity: 0; 
+            animation: fadeIn 0.4s forwards;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* === 启动按钮 === */
+        #start-btn {
+            pointer-events: auto;
+            padding: 1.5rem 4rem;
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border-radius: 2px; /* 方形圆角更显高级 */
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 200;
+        }
+        
+        #start-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            letter-spacing: 6px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        /* === 倒计时 === */
+        #countdown {
+            position: absolute;
+            bottom: 12%;
+            font-size: 12vw;
+            font-weight: 100;
+            color: rgba(255, 255, 255, 0.85);
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            font-variant-numeric: tabular-nums;
+            display: none;
+            z-index: 20;
+            letter-spacing: -2px;
+        }
+
+        /* === 最终浪漫文字区域 (排版核心) === */
+        #message-container {
+            position: absolute;
+            top: 52%; /* 视觉中心微偏下 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            opacity: 0;
+            width: 90%;
+            max-width: 1000px;
+            z-index: 30;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* 初始隐藏 */
+            pointer-events: none;
+        }
+
+        /* 主标题: Happy 2026 */
+        .msg-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 18vw; /* 巨大 */
+            background: linear-gradient(to bottom, #fbf5b7, #bf953f); /* 金色渐变字 */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(191, 149, 63, 0.3);
+            margin: 0 0 20px 0;
+            line-height: 1;
+            padding-bottom: 10px;
+        }
+
+        /* 提问: Are You Ready... */
+        .msg-question {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3vw;
+            font-weight: 200; /* 极细体，优雅 */
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: none; /* 取消全大写 */
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* 承诺: LOVE YOU FOREVER */
+        .msg-love {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4vw;
+            font-weight: 600; /* 粗体，强调 */
+            color: #fff;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        /* 署名: From Your Love... */
+        .msg-sign {
+            font-family: 'Montserrat', sans-serif; /* 保持同字体 */
+            font-size: 2.5vw;
+            font-weight: 200;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 10px;
+        }
+
+        /* 移动端字体大小修正，防止太小 */
+        @media (max-width: 768px) {
+            .msg-title { font-size: 80px; }
+            .msg-question { font-size: 18px; letter-spacing: 1px; }
+            .msg-love { font-size: 24px; letter-spacing: 3px; }
+            .msg-sign { font-size: 14px; }
+            #countdown { font-size: 80px; }
+        }
+
     </style>
 </head>
 <body>
-    <div class="stars-bg"></div>
     <canvas id="fireworks"></canvas>
     
     <div id="ui-layer">
-        <button id="start-btn">开启跨年时刻</button>
-        <div id="countdown">01:00</div>
-        <div id="message">Happy New Year<br>I Love You</div>
+        <div id="photo-container">
+            <img id="current-photo" class="memory-photo" src="" alt="Memory">
+        </div>
+
+        <button id="start-btn">Start The Journey</button>
+        <div id="countdown"></div>
+        
+        <div id="message-container">
+            <div class="msg-title">Happy 2026</div>
+            <div class="msg-question">Are You Ready To Start The Journey With Me?</div>
+            <div class="msg-love">LOVE YOU FOREVER</div>
+            <div class="msg-sign">From Your Love, Edwin.</div>
+        </div>
     </div>
 
     <script>
-        // ================= 配置区域 =================
+        // ================= 配置区域 (请在此处替换你的照片) =================
         const CONFIG = {
-            particleCount: 100,     // 爆炸粒子数量
-            gravity: 0.05,          // 重力
-            friction: 0.96,         // 空气阻力
-            colors: [               // 烟花颜色库
-                '340, 100%, 50%',   // 玫红
-                '200, 100%, 50%',   // 湛蓝
-                '50, 100%, 50%',    // 金黄
-                '150, 100%, 50%'    // 翠绿
-            ]
+            photos: [
+                'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800', 
+                'https://images.unsplash.com/photo-1516589178581-a70ce6d55b4b?q=80&w=800', 
+                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800', 
+                'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=800',
+                'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800'
+            ],
+            duration: 60 // 倒计时秒数
         };
 
         // ================= 核心变量 =================
         const canvas = document.getElementById('fireworks');
         const ctx = canvas.getContext('2d');
-        let fireworks = []; // 修复：添加了 []
-        let particles = []; // 修复：添加了 []
-        let animationId;
-        let targetTime = null;
+        let width, height;
+        
+        // 粒子容器
+        let fireworks = [];
+        let particles = [];
+        
+        // 状态
+        let startTime;
         let isRunning = false;
-        let isCelebration = false;
+        let isCelebration = false; // 是否开始最后的狂欢
+        let bigFirework = null; // 专属变量：定情烟花
+
+        // DOM 缓存
+        const ui = {
+            btn: document.getElementById('start-btn'),
+            count: document.getElementById('countdown'),
+            photoBox: document.getElementById('photo-container'),
+            photoImg: document.getElementById('current-photo'),
+            msgBox: document.getElementById('message-container')
+        };
 
         // ================= 屏幕适配 =================
         function resize() {
-            // 修复：修正了意外断行
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = window.innerWidth * dpr;
-            canvas.height = window.innerHeight * dpr;
-            ctx.scale(dpr, dpr);
-            canvas.style.width = window.innerWidth + 'px';
-            canvas.style.height = window.innerHeight + 'px';
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
         }
         window.addEventListener('resize', resize);
         resize();
 
-        // ================= 辅助函数 =================
-        const random = (min, max) => Math.random() * (max - min) + min;
-        const randomColor = () => CONFIG.colors[Math.floor(Math.random() * CONFIG.colors.length)];
+        // ================= 物理系统 =================
+        
+        // 辅助：生成随机颜色 (金色/粉色系为主)
+        function getRandomColor(isBig) {
+            if (isBig) return '255, 215, 0'; // 纯金
+            const r = Math.random();
+            if (r < 0.3) return '255, 215, 0'; // 金
+            if (r < 0.6) return '255, 105, 180'; // 热粉
+            if (r < 0.8) return '255, 50, 50'; // 红
+            return '135, 206, 250'; // 浅蓝点缀
+        }
 
-        // ================= 粒子类 (爆炸碎片) =================
-        class Particle {
-            constructor(x, y, hue, velocity) {
-                this.x = x;
-                this.y = y;
-                this.hue = hue;
-                this.alpha = 1;
-                this.decay = random(0.015, 0.03);
+        class Firework {
+            constructor(sx, sy, tx, ty, isBig = false) {
+                this.x = sx;
+                this.y = sy;
+                // 记录起点和终点，用于大烟花的插值计算
+                this.startY = sy;
+                this.targetY = ty;
                 
-                // 如果没有指定速度，则随机生成圆形爆炸
-                if (velocity) {
-                    this.vx = velocity.x;
-                    this.vy = velocity.y;
+                this.tx = tx;
+                this.ty = ty;
+                this.isBig = isBig;
+                
+                // 普通烟花的物理参数
+                this.distanceToTarget = Math.hypot(tx - sx, ty - sy);
+                this.distanceTraveled = 0;
+                this.angle = Math.atan2(ty - sy, tx - sx);
+                this.speed = Math.random() * 2 + 3; // 普通烟花速度
+                this.color = getRandomColor(isBig);
+                
+                this.dead = false;
+            }
+
+            update(remainingTime) {
+                if (this.isBig) {
+                    // === 定情烟花特殊逻辑 (时间映射) ===
+                    // remainingTime 从 2.0 变到 0.0
+                    // progress 从 0.0 变到 1.0
+                    let progress = 1 - (remainingTime / 2);
+                    if (progress < 0) progress = 0;
+                    if (progress > 1) progress = 1;
+
+                    // 使用缓动函数 easeOutQuad: 1 - (1-x)*(1-x) 让它减速
+                    // 或者更简单的减速感觉: 
+                    const ease = 1 - Math.pow(1 - progress, 2); 
+
+                    // 严格按照进度计算位置
+                    this.y = this.startY + (this.targetY - this.startY) * ease;
+                    this.x = width / 2; // 保持居中
+
+                    // 到了0秒，强制爆炸
+                    if (remainingTime <= 0) {
+                        this.explode();
+                        this.dead = true;
+                    }
                 } else {
-                    const angle = random(0, Math.PI * 2);
-                    const speed = random(2, 5);
-                    this.vx = Math.cos(angle) * speed;
-                    this.vy = Math.sin(angle) * speed;
+                    // === 普通烟花逻辑 ===
+                    const vx = Math.cos(this.angle) * this.speed;
+                    const vy = Math.sin(this.angle) * this.speed;
+                    this.x += vx;
+                    this.y += vy;
+                    this.distanceTraveled += this.speed;
+                    
+                    if (this.distanceTraveled >= this.distanceToTarget) {
+                        this.explode();
+                        this.dead = true;
+                    }
                 }
             }
 
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.isBig ? 6 : 2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgb(${this.color})`;
+                ctx.fill();
+                
+                // 拖尾
+                if (this.isBig) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    // 拖尾向下
+                    ctx.lineTo(this.x, this.y + 30); 
+                    ctx.strokeStyle = `rgba(${this.color}, 0.5)`;
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+                }
+            }
+
+            explode() {
+                // 爆炸后的粒子数量
+                const count = this.isBig ? 800 : Math.random() * 50 + 50; 
+                for (let i = 0; i < count; i++) {
+                    particles.push(new Particle(this.x, this.y, this.color, this.isBig));
+                }
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color, isBig) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.alpha = 1;
+                
+                const angle = Math.random() * Math.PI * 2;
+                // 爆炸力度
+                const velocity = isBig ? Math.random() * 25 + 2 : Math.random() * 6 + 1;
+                
+                this.vx = Math.cos(angle) * velocity;
+                this.vy = Math.sin(angle) * velocity;
+                
+                this.friction = 0.95; // 空气阻力
+                this.gravity = 0.05;  // 重力
+                // 消失速度: 大烟花消失得更慢
+                this.decay = isBig ? Math.random() * 0.005 + 0.003 : Math.random() * 0.02 + 0.01;
+            }
+
             update() {
-                this.vx *= CONFIG.friction;
-                this.vy *= CONFIG.friction;
-                this.vy += CONFIG.gravity;
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.vy += this.gravity;
                 this.x += this.vx;
                 this.y += this.vy;
                 this.alpha -= this.decay;
@@ -181,186 +381,138 @@
             draw() {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
-                ctx.fillStyle = `hsla(${this.hue}, ${this.alpha})`;
+                ctx.fillStyle = `rgb(${this.color})`;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.restore();
             }
         }
 
-        // ================= 烟花类 (升空火箭) =================
-        class Firework {
-            constructor(x, targetY, type = 'normal') {
-                this.x = x;
-                this.y = window.innerHeight;
-                this.targetY = targetY;
-                this.type = type;
-                this.speed = 2;
-                this.angle = -Math.PI / 2; // 垂直向上
-                this.hue = randomColor();
-                this.history = []; // 修复：添加了 []
-                this.dead = false;
-            }
-
-            update() {
-                this.history.push({x: this.x, y: this.y});
-                if(this.history.length > 3) this.history.shift();
-
-                this.y -= (this.y - this.targetY) * 0.08 + this.speed; // 缓动上升
-
-                // 到达目标点
-                if (this.y <= this.targetY + 5) {
-                    this.explode();
-                    this.dead = true;
-                }
-            }
-
-            explode() {
-                // 播放音效逻辑（可选）
-                // createSound(); 
-                
-                if (this.type === 'heart') {
-                    this.createHeartShape();
-                } else {
-                    this.createCircleShape();
-                }
-            }
-
-            createCircleShape() {
-                for (let i = 0; i < CONFIG.particleCount; i++) {
-                    particles.push(new Particle(this.x, this.y, this.hue));
-                }
-            }
-
-            createHeartShape() {
-                // 心形数学方程
-                for (let i = 0; i < Math.PI * 2; i += 0.1) {
-                    const r = 16 * Math.pow(Math.sin(i), 3);
-                    const hx = r;
-                    const hy = -(13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i));
-                    
-                    particles.push(new Particle(this.x, this.y, this.hue, {
-                        x: hx * 0.15, // 缩放系数
-                        y: hy * 0.15
-                    }));
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                if(this.history.length > 0) {
-                    // 修复：this.history 是数组，不能直接 .x，要取第一个元素
-                    ctx.moveTo(this.history[0].x, this.history[0].y);
-                    for(let i=1; i<this.history.length; i++) {
-                        ctx.lineTo(this.history[i].x, this.history[i].y);
-                    }
-                } else {
-                    ctx.moveTo(this.x, this.y);
-                    ctx.lineTo(this.x, this.y - 10);
-                }
-                ctx.strokeStyle = `hsl(${this.hue})`;
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
-        }
-
-        // ================= 主逻辑 =================
-        const startBtn = document.getElementById('start-btn');
-        const countdownEl = document.getElementById('countdown');
-        const messageEl = document.getElementById('message');
-
-        startBtn.addEventListener('click', () => {
-            // 1. 隐藏按钮
-            startBtn.style.display = 'none';
-            countdownEl.style.display = 'block';
-            
-            // 2. 设定目标时间 (当前时间 + 60秒)
-            targetTime = Date.now() + 60 * 1000;
-            
-            // 3. 启动
-            isRunning = true;
-            loop();
-        });
-
-        function formatTime(ms) {
-            const s = Math.floor(ms / 1000);
-            const m = Math.floor(s / 60);
-            const rs = s % 60;
-            // 最后10秒显示毫秒，增加紧张感
-            if (ms < 10000) {
-                const dec = Math.floor((ms % 1000) / 10);
-                return `${rs < 10? '0' + rs : rs}.${dec < 10? '0' + dec : dec}`;
-            }
-            return `${m < 10? '0' + m : m}:${rs < 10? '0' + rs : rs}`;
-        }
-
-        function triggerGrandFinale() {
-            isCelebration = true;
-            countdownEl.style.display = 'none';
-            messageEl.style.opacity = 1;
-            messageEl.style.transform = 'scale(1)';
-
-            // 疯狂连发模式
-            let count = 0;
-            const timer = setInterval(() => {
-                const x = random(window.innerWidth * 0.1, window.innerWidth * 0.9);
-                const y = random(window.innerHeight * 0.2, window.innerHeight * 0.5);
-                const type = Math.random() > 0.6? 'heart' : 'normal';
-                fireworks.push(new Firework(x, y, type));
-                count++;
-                if (count > 20) clearInterval(timer);
-            }, 300);
-        }
+        // ================= 逻辑循环 =================
 
         function loop() {
             requestAnimationFrame(loop);
 
-            // 绘制背景 (产生拖尾效果)
+            // 背景清理 (带拖尾效果)
             ctx.globalCompositeOperation = 'destination-out';
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
-            // 修复：DPR 缩放修复
-            const dpr = window.devicePixelRatio || 1;
-            ctx.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-            ctx.globalCompositeOperation = 'lighter';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
+            ctx.fillRect(0, 0, width, height);
+            ctx.globalCompositeOperation = 'source-over';
 
-            // 倒计时逻辑
-            if (isRunning &&!isCelebration) {
-                const now = Date.now();
-                const diff = targetTime - now;
+            if (!isRunning) return;
 
-                if (diff <= 0) {
-                    countdownEl.innerText = "00.00";
-                    triggerGrandFinale();
+            const now = Date.now();
+            const elapsed = (now - startTime) / 1000;
+            const remaining = CONFIG.duration - elapsed;
+
+            // 1. 照片逻辑
+            if (remaining > 0) {
+                // 阶段A: 60s - 10s (每1秒一张)
+                if (remaining > 10) {
+                    ui.photoBox.style.display = 'flex';
+                    ui.photoBox.style.opacity = 1;
+                    const index = Math.floor(elapsed) % CONFIG.photos.length;
+                    if (ui.photoImg.getAttribute('data-index') != index) {
+                        ui.photoImg.src = CONFIG.photos[index];
+                        ui.photoImg.setAttribute('data-index', index);
+                        ui.photoImg.style.animation = 'none';
+                        ui.photoImg.offsetHeight;
+                        ui.photoImg.style.animation = 'fadeIn 0.9s forwards';
+                    }
+                } 
+                // 阶段B: 10s - 2s (每0.5秒一张)
+                else if (remaining > 2) {
+                    const fastOffset = Math.floor((elapsed - (CONFIG.duration - 10)) * 2);
+                    const totalIndex = (50 + fastOffset) % CONFIG.photos.length;
+                    if (ui.photoImg.getAttribute('data-index') != totalIndex) {
+                        ui.photoImg.src = CONFIG.photos[totalIndex];
+                        ui.photoImg.setAttribute('data-index', totalIndex);
+                        ui.photoImg.style.animation = 'none';
+                        ui.photoImg.offsetHeight;
+                        ui.photoImg.style.animation = 'fadeIn 0.4s forwards';
+                    }
+                } 
+                // 阶段C: 最后2秒 (照片隐去)
+                else {
+                    ui.photoBox.style.transition = "opacity 0.5s";
+                    ui.photoBox.style.opacity = 0;
+                }
+
+                // 2. 倒计时文字逻辑
+                if (remaining > 10) {
+                    ui.count.innerText = Math.floor(remaining);
                 } else {
-                    countdownEl.innerText = formatTime(diff);
-                    // 最后10秒文字变红
-                    if(diff < 10000) countdownEl.style.color = '#ff3366';
+                    ui.count.innerText = remaining.toFixed(1);
+                    ui.count.style.color = '#ff4d6d'; // 倒计时变红
+                }
+
+                // 3. 召唤定情烟花 (倒数2秒时生成)
+                if (remaining <= 2 && !bigFirework) {
+                    // 从底部中间，飞到顶部20%的位置
+                    bigFirework = new Firework(width / 2, height, width / 2, height * 0.2, true);
+                    fireworks.push(bigFirework);
+                }
+
+            } else {
+                // === 时间到 (0秒) ===
+                if (!isCelebration) {
+                    isCelebration = true; // 开启狂欢模式
+                    ui.count.style.display = 'none'; // 隐藏倒计时
+                    
+                    // 显示最终文字 (淡入)
+                    setTimeout(() => {
+                        ui.msgBox.style.transition = "opacity 2.5s ease";
+                        ui.msgBox.style.opacity = 1;
+                    }, 200); // 稍微延后一点点，让烟花先炸开
                 }
             }
 
-            // 烟花更新
+            // === 狂欢模式：持续放烟花 ===
             if (isCelebration) {
-                // 随机自动补充烟花
-                if (Math.random() < 0.05) {
-                    const x = random(100, window.innerWidth - 100);
-                    const y = random(100, window.innerHeight / 2);
-                    fireworks.push(new Firework(x, y, Math.random() > 0.8? 'heart' : 'normal'));
+                // 每帧有 10% 概率发射一枚新烟花，形成弹幕效果
+                if (Math.random() < 0.1) {
+                    const sx = Math.random() * width; // 随机底部起点
+                    const sy = height;
+                    const tx = Math.random() * width; // 随机爆炸点
+                    const ty = Math.random() * (height * 0.6); // 爆炸高度限制在上半屏
+                    fireworks.push(new Firework(sx, sy, tx, ty, false));
                 }
             }
 
-            fireworks.forEach((fw, index) => {
-                fw.update();
+            // 更新绘制
+            fireworks.forEach((fw, i) => {
+                fw.update(remaining);
                 fw.draw();
-                if (fw.dead) fireworks.splice(index, 1);
+                if (fw.dead) fireworks.splice(i, 1);
             });
 
-            particles.forEach((p, index) => {
+            particles.forEach((p, i) => {
                 p.update();
                 p.draw();
-                if (p.alpha <= 0) particles.splice(index, 1);
+                if (p.alpha <= 0) particles.splice(i, 1);
             });
         }
+
+        // ================= 交互 =================
+        ui.btn.addEventListener('click', () => {
+            // UI 切换
+            ui.btn.style.opacity = 0;
+            setTimeout(() => ui.btn.style.display = 'none', 600);
+            
+            ui.count.style.display = 'block';
+            
+            // 预加载图片
+            CONFIG.photos.forEach(src => {
+                const i = new Image();
+                i.src = src;
+            });
+
+            startTime = Date.now();
+            isRunning = true;
+            loop();
+        });
+
     </script>
 </body>
 </html>
