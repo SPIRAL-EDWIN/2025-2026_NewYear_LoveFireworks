@@ -44,9 +44,9 @@
         /* === 照片容器 === */
         #photo-container {
             position: absolute;
-            top: 8%; /* 稍微靠上，留给倒计时空间 */
-            width: 85%;
-            max-width: 700px;
+            top: 8%; 
+            width: 80%; /* 稍微收窄 */
+            max-width: 600px;
             aspect-ratio: 16/9;
             display: none;
             justify-content: center;
@@ -69,13 +69,13 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* === 启动按钮 (样式调整以适应长文本) === */
+        /* === 启动按钮 === */
         #start-btn {
             pointer-events: auto;
-            padding: 1.5rem 2rem; /* 左右padding稍微减小以容纳长句 */
-            max-width: 80%;       /* 限制最大宽度 */
-            font-size: 1rem;      /* 字体稍微调小一点点 */
-            line-height: 1.6;     /* 增加行高 */
+            padding: 1.2rem 2rem;
+            max-width: 80%;
+            font-size: 0.9rem; /* 字体调小 */
+            line-height: 1.5;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
@@ -83,11 +83,11 @@
             cursor: pointer;
             backdrop-filter: blur(5px);
             text-transform: uppercase;
-            letter-spacing: 2px;  /* 稍微减小字间距 */
+            letter-spacing: 2px;
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             font-family: 'Montserrat', sans-serif;
             font-weight: 200;
-            text-align: center;   /* 确保多行文本居中 */
+            text-align: center;
         }
         
         #start-btn:hover {
@@ -100,7 +100,7 @@
         #countdown {
             position: absolute;
             bottom: 12%;
-            font-size: 12vw;
+            font-size: 10vw; /* 缩小 */
             font-weight: 100;
             color: rgba(255, 255, 255, 0.85);
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
@@ -110,10 +110,10 @@
             letter-spacing: -2px;
         }
 
-        /* === 最终浪漫文字区域 === */
+        /* === 最终浪漫文字区域 (调整版) === */
         #message-container {
             position: absolute;
-            top: 52%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
@@ -128,73 +128,67 @@
             pointer-events: none;
         }
 
-        /* 主标题: Happy 2026 (增加呼吸光效) */
+        /* 主标题: Happy 2026 (缩小) */
         .msg-title {
             font-family: 'Great Vibes', cursive;
-            font-size: 18vw; 
+            font-size: 12vw; /* 从18降到12 */
             background: linear-gradient(to bottom, #fbf5b7, #bf953f);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            /* 初始阴影 */
             text-shadow: 0 0 30px rgba(191, 149, 63, 0.3);
-            margin: 0 0 20px 0;
-            line-height: 1;
+            margin: 0 0 15px 0;
+            line-height: 1.1;
             padding-bottom: 10px;
-            /* 引入呼吸动画 */
             animation: glow 3s infinite ease-in-out;
         }
 
         @keyframes glow {
-            0%, 100% {
-                filter: drop-shadow(0 0 10px rgba(191, 149, 63, 0.3));
-            }
-            50% {
-                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6));
-            }
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(191, 149, 63, 0.3)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); }
         }
 
-        /* 提问: Are You Ready... */
+        /* 提问: Are You Ready... (缩小) */
         .msg-question {
             font-family: 'Montserrat', sans-serif;
-            font-size: 3vw;
+            font-size: 2vw; /* 从3降到2 */
             font-weight: 200;
             color: #fff;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: none; 
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* 承诺: LOVE YOU (修改后) */
+        /* 承诺: LOVE YOU (缩小) */
         .msg-love {
             font-family: 'Montserrat', sans-serif;
-            font-size: 4vw;
+            font-size: 3vw; /* 从4降到3 */
             font-weight: 600; 
             color: #fff;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
             text-transform: uppercase;
             margin-bottom: 15px;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
         }
 
-        /* 署名: From Your Love... */
+        /* 署名 (缩小) */
         .msg-sign {
             font-family: 'Montserrat', sans-serif;
-            font-size: 2.5vw;
+            font-size: 1.5vw; /* 从2.5降到1.5 */
             font-weight: 200;
             font-style: italic;
             color: rgba(255, 255, 255, 0.8);
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         /* 移动端字体大小修正 */
         @media (max-width: 768px) {
-            .msg-title { font-size: 80px; }
-            .msg-question { font-size: 18px; letter-spacing: 1px; }
-            .msg-love { font-size: 24px; letter-spacing: 3px; }
-            .msg-sign { font-size: 14px; }
-            #countdown { font-size: 80px; }
-            #start-btn { font-size: 0.9rem; padding: 1.2rem 1.5rem; }
+            .msg-title { font-size: 50px; } /* 之前是80px */
+            .msg-question { font-size: 14px; letter-spacing: 1px; }
+            .msg-love { font-size: 20px; letter-spacing: 2px; }
+            .msg-sign { font-size: 12px; }
+            #countdown { font-size: 60px; }
+            #start-btn { font-size: 0.8rem; padding: 1rem 1.5rem; }
         }
 
     </style>
@@ -219,7 +213,7 @@
     </div>
 
     <script>
-        // ================= 配置区域 (请在此处替换你的照片) =================
+        // ================= 配置区域 =================
         const CONFIG = {
             photos: [
                 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=800', 
@@ -228,25 +222,20 @@
                 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=800',
                 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800'
             ],
-            duration: 60 // 倒计时秒数
+            duration: 60 
         };
 
         // ================= 核心变量 =================
         const canvas = document.getElementById('fireworks');
         const ctx = canvas.getContext('2d');
         let width, height;
-        
-        // 粒子容器
         let fireworks = [];
         let particles = [];
-        
-        // 状态
         let startTime;
         let isRunning = false;
         let isCelebration = false; 
-        let bigFirework = null; // 专属变量：定情烟花
+        let bigFirework = null; 
 
-        // DOM 缓存
         const ui = {
             btn: document.getElementById('start-btn'),
             count: document.getElementById('countdown'),
@@ -266,66 +255,57 @@
         resize();
 
         // ================= 物理系统 =================
-        
-        // 辅助：生成随机颜色
         function getRandomColor(isBig) {
-            if (isBig) return '255, 215, 0'; // 纯金
+            if (isBig) return '255, 215, 0'; 
             const r = Math.random();
-            if (r < 0.3) return '255, 215, 0'; // 金
-            if (r < 0.6) return '255, 105, 180'; // 热粉
-            if (r < 0.8) return '255, 50, 50'; // 红
-            return '135, 206, 250'; // 浅蓝点缀
+            if (r < 0.3) return '255, 215, 0'; 
+            if (r < 0.6) return '255, 105, 180'; 
+            if (r < 0.8) return '255, 50, 50'; 
+            return '135, 206, 250'; 
         }
 
         class Firework {
             constructor(sx, sy, tx, ty, isBig = false) {
                 this.x = sx;
                 this.y = sy;
-                // 记录起点和终点，用于大烟花的插值计算
                 this.startY = sy;
                 this.targetY = ty;
-                
                 this.tx = tx;
                 this.ty = ty;
                 this.isBig = isBig;
                 
-                // 普通烟花的物理参数
                 this.distanceToTarget = Math.hypot(tx - sx, ty - sy);
                 this.distanceTraveled = 0;
                 this.angle = Math.atan2(ty - sy, tx - sx);
-                this.speed = Math.random() * 2 + 3; // 普通烟花速度
+                this.speed = Math.random() * 2 + 3; 
                 this.color = getRandomColor(isBig);
-                
                 this.dead = false;
             }
 
             update(remainingTime) {
                 if (this.isBig) {
-                    // === 定情烟花特殊逻辑 (时间映射) ===
+                    // === 定情烟花平滑运动逻辑 ===
+                    // progress: 0 (start) -> 1 (end)
                     let progress = 1 - (remainingTime / 2);
                     if (progress < 0) progress = 0;
                     if (progress > 1) progress = 1;
 
-                    // 使用缓动函数 easeOutQuad 模拟减速
-                    const ease = 1 - Math.pow(1 - progress, 2); 
+                    // 修改：使用 1.2 次幂，更接近线性，避免末端剧烈减速
+                    const ease = 1 - Math.pow(1 - progress, 1.2); 
 
-                    // 严格按照进度计算位置
                     this.y = this.startY + (this.targetY - this.startY) * ease;
-                    this.x = width / 2; // 保持居中
+                    this.x = width / 2; 
 
-                    // 到了0秒，强制爆炸
                     if (remainingTime <= 0) {
                         this.explode();
                         this.dead = true;
                     }
                 } else {
-                    // === 普通烟花逻辑 ===
                     const vx = Math.cos(this.angle) * this.speed;
                     const vy = Math.sin(this.angle) * this.speed;
                     this.x += vx;
                     this.y += vy;
                     this.distanceTraveled += this.speed;
-                    
                     if (this.distanceTraveled >= this.distanceToTarget) {
                         this.explode();
                         this.dead = true;
@@ -339,7 +319,6 @@
                 ctx.fillStyle = `rgb(${this.color})`;
                 ctx.fill();
                 
-                // 拖尾
                 if (this.isBig) {
                     ctx.beginPath();
                     ctx.moveTo(this.x, this.y);
@@ -351,7 +330,6 @@
             }
 
             explode() {
-                // 爆炸后的粒子数量
                 const count = this.isBig ? 800 : Math.random() * 50 + 50; 
                 for (let i = 0; i < count; i++) {
                     particles.push(new Particle(this.x, this.y, this.color, this.isBig));
@@ -365,17 +343,12 @@
                 this.y = y;
                 this.color = color;
                 this.alpha = 1;
-                
                 const angle = Math.random() * Math.PI * 2;
-                // 爆炸力度
                 const velocity = isBig ? Math.random() * 25 + 2 : Math.random() * 6 + 1;
-                
                 this.vx = Math.cos(angle) * velocity;
                 this.vy = Math.sin(angle) * velocity;
-                
-                this.friction = 0.95; // 空气阻力
-                this.gravity = 0.05;  // 重力
-                // 消失速度: 大烟花消失得更慢
+                this.friction = 0.95; 
+                this.gravity = 0.05;  
                 this.decay = isBig ? Math.random() * 0.005 + 0.003 : Math.random() * 0.02 + 0.01;
             }
 
@@ -399,12 +372,8 @@
             }
         }
 
-        // ================= 逻辑循环 =================
-
         function loop() {
             requestAnimationFrame(loop);
-
-            // 背景清理 (带拖尾效果)
             ctx.globalCompositeOperation = 'destination-out';
             ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'; 
             ctx.fillRect(0, 0, width, height);
@@ -416,9 +385,7 @@
             const elapsed = (now - startTime) / 1000;
             const remaining = CONFIG.duration - elapsed;
 
-            // 1. 照片逻辑
             if (remaining > 0) {
-                // 阶段A: 60s - 10s (每1秒一张)
                 if (remaining > 10) {
                     ui.photoBox.style.display = 'flex';
                     ui.photoBox.style.opacity = 1;
@@ -430,9 +397,7 @@
                         ui.photoImg.offsetHeight;
                         ui.photoImg.style.animation = 'fadeIn 0.9s forwards';
                     }
-                } 
-                // 阶段B: 10s - 2s (每0.5秒一张)
-                else if (remaining > 2) {
+                } else if (remaining > 2) {
                     const fastOffset = Math.floor((elapsed - (CONFIG.duration - 10)) * 2);
                     const totalIndex = (50 + fastOffset) % CONFIG.photos.length;
                     if (ui.photoImg.getAttribute('data-index') != totalIndex) {
@@ -442,35 +407,26 @@
                         ui.photoImg.offsetHeight;
                         ui.photoImg.style.animation = 'fadeIn 0.4s forwards';
                     }
-                } 
-                // 阶段C: 最后2秒 (照片隐去)
-                else {
+                } else {
                     ui.photoBox.style.transition = "opacity 0.5s";
                     ui.photoBox.style.opacity = 0;
                 }
 
-                // 2. 倒计时文字逻辑
                 if (remaining > 10) {
                     ui.count.innerText = Math.floor(remaining);
                 } else {
                     ui.count.innerText = remaining.toFixed(1);
-                    ui.count.style.color = '#ff4d6d'; // 倒计时变红
+                    ui.count.style.color = '#ff4d6d'; 
                 }
 
-                // 3. 召唤定情烟花 (倒数2秒时生成)
                 if (remaining <= 2 && !bigFirework) {
-                    // 从底部中间，飞到顶部20%的位置
                     bigFirework = new Firework(width / 2, height, width / 2, height * 0.2, true);
                     fireworks.push(bigFirework);
                 }
-
             } else {
-                // === 时间到 (0秒) ===
                 if (!isCelebration) {
-                    isCelebration = true; // 开启狂欢模式
-                    ui.count.style.display = 'none'; // 隐藏倒计时
-                    
-                    // 显示最终文字 (淡入)
+                    isCelebration = true; 
+                    ui.count.style.display = 'none'; 
                     setTimeout(() => {
                         ui.msgBox.style.transition = "opacity 2.5s ease";
                         ui.msgBox.style.opacity = 1;
@@ -478,9 +434,7 @@
                 }
             }
 
-            // === 狂欢模式：持续放烟花 ===
             if (isCelebration) {
-                // 每帧有 10% 概率发射一枚新烟花
                 if (Math.random() < 0.1) {
                     const sx = Math.random() * width; 
                     const sy = height;
@@ -490,7 +444,6 @@
                 }
             }
 
-            // 更新绘制
             fireworks.forEach((fw, i) => {
                 fw.update(remaining);
                 fw.draw();
@@ -504,25 +457,19 @@
             });
         }
 
-        // ================= 交互 =================
         ui.btn.addEventListener('click', () => {
-            // UI 切换
             ui.btn.style.opacity = 0;
             setTimeout(() => ui.btn.style.display = 'none', 600);
-            
             ui.count.style.display = 'block';
-            
-            // 预加载图片
             CONFIG.photos.forEach(src => {
                 const i = new Image();
                 i.src = src;
             });
-
             startTime = Date.now();
             isRunning = true;
             loop();
         });
-
     </script>
 </body>
 </html>
+```
