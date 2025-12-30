@@ -59,7 +59,6 @@
             height: 100%;
             object-fit: contain;
             border-radius: 4px;
-            /* 给照片加一个柔和的辉光，像回忆一样 */
             box-shadow: 0 0 50px rgba(255, 255, 255, 0.1); 
             opacity: 0; 
             animation: fadeIn 0.4s forwards;
@@ -70,27 +69,30 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* === 启动按钮 === */
+        /* === 启动按钮 (样式调整以适应长文本) === */
         #start-btn {
             pointer-events: auto;
-            padding: 1.5rem 4rem;
-            font-size: 1.2rem;
+            padding: 1.5rem 2rem; /* 左右padding稍微减小以容纳长句 */
+            max-width: 80%;       /* 限制最大宽度 */
+            font-size: 1rem;      /* 字体稍微调小一点点 */
+            line-height: 1.6;     /* 增加行高 */
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.3);
             color: #fff;
-            border-radius: 2px; /* 方形圆角更显高级 */
+            border-radius: 2px;
             cursor: pointer;
             backdrop-filter: blur(5px);
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 2px;  /* 稍微减小字间距 */
             transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             font-family: 'Montserrat', sans-serif;
             font-weight: 200;
+            text-align: center;   /* 确保多行文本居中 */
         }
         
         #start-btn:hover {
             background: rgba(255, 255, 255, 0.15);
-            letter-spacing: 6px;
+            letter-spacing: 3px;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
         }
 
@@ -108,10 +110,10 @@
             letter-spacing: -2px;
         }
 
-        /* === 最终浪漫文字区域 (排版核心) === */
+        /* === 最终浪漫文字区域 === */
         #message-container {
             position: absolute;
-            top: 52%; /* 视觉中心微偏下 */
+            top: 52%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
@@ -123,40 +125,51 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* 初始隐藏 */
             pointer-events: none;
         }
 
-        /* 主标题: Happy 2026 */
+        /* 主标题: Happy 2026 (增加呼吸光效) */
         .msg-title {
             font-family: 'Great Vibes', cursive;
-            font-size: 18vw; /* 巨大 */
-            background: linear-gradient(to bottom, #fbf5b7, #bf953f); /* 金色渐变字 */
+            font-size: 18vw; 
+            background: linear-gradient(to bottom, #fbf5b7, #bf953f);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 50px rgba(191, 149, 63, 0.3);
+            /* 初始阴影 */
+            text-shadow: 0 0 30px rgba(191, 149, 63, 0.3);
             margin: 0 0 20px 0;
             line-height: 1;
             padding-bottom: 10px;
+            /* 引入呼吸动画 */
+            animation: glow 3s infinite ease-in-out;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 10px rgba(191, 149, 63, 0.3));
+            }
+            50% {
+                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6));
+            }
         }
 
         /* 提问: Are You Ready... */
         .msg-question {
             font-family: 'Montserrat', sans-serif;
             font-size: 3vw;
-            font-weight: 200; /* 极细体，优雅 */
+            font-weight: 200;
             color: #fff;
             letter-spacing: 2px;
-            text-transform: none; /* 取消全大写 */
+            text-transform: none; 
             margin-bottom: 30px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* 承诺: LOVE YOU FOREVER */
+        /* 承诺: LOVE YOU (修改后) */
         .msg-love {
             font-family: 'Montserrat', sans-serif;
             font-size: 4vw;
-            font-weight: 600; /* 粗体，强调 */
+            font-weight: 600; 
             color: #fff;
             letter-spacing: 6px;
             text-transform: uppercase;
@@ -166,7 +179,7 @@
 
         /* 署名: From Your Love... */
         .msg-sign {
-            font-family: 'Montserrat', sans-serif; /* 保持同字体 */
+            font-family: 'Montserrat', sans-serif;
             font-size: 2.5vw;
             font-weight: 200;
             font-style: italic;
@@ -174,13 +187,14 @@
             margin-top: 10px;
         }
 
-        /* 移动端字体大小修正，防止太小 */
+        /* 移动端字体大小修正 */
         @media (max-width: 768px) {
             .msg-title { font-size: 80px; }
             .msg-question { font-size: 18px; letter-spacing: 1px; }
             .msg-love { font-size: 24px; letter-spacing: 3px; }
             .msg-sign { font-size: 14px; }
             #countdown { font-size: 80px; }
+            #start-btn { font-size: 0.9rem; padding: 1.2rem 1.5rem; }
         }
 
     </style>
@@ -193,13 +207,13 @@
             <img id="current-photo" class="memory-photo" src="" alt="Memory">
         </div>
 
-        <button id="start-btn">Start The Journey</button>
+        <button id="start-btn">READY TO REVIEW AND START YOUR JOURNEY WITH ME?</button>
         <div id="countdown"></div>
         
         <div id="message-container">
             <div class="msg-title">Happy 2026</div>
             <div class="msg-question">Are You Ready To Start The Journey With Me?</div>
-            <div class="msg-love">LOVE YOU FOREVER</div>
+            <div class="msg-love">LOVE YOU</div>
             <div class="msg-sign">From Your Love, Edwin.</div>
         </div>
     </div>
@@ -229,7 +243,7 @@
         // 状态
         let startTime;
         let isRunning = false;
-        let isCelebration = false; // 是否开始最后的狂欢
+        let isCelebration = false; 
         let bigFirework = null; // 专属变量：定情烟花
 
         // DOM 缓存
@@ -253,7 +267,7 @@
 
         // ================= 物理系统 =================
         
-        // 辅助：生成随机颜色 (金色/粉色系为主)
+        // 辅助：生成随机颜色
         function getRandomColor(isBig) {
             if (isBig) return '255, 215, 0'; // 纯金
             const r = Math.random();
@@ -288,14 +302,11 @@
             update(remainingTime) {
                 if (this.isBig) {
                     // === 定情烟花特殊逻辑 (时间映射) ===
-                    // remainingTime 从 2.0 变到 0.0
-                    // progress 从 0.0 变到 1.0
                     let progress = 1 - (remainingTime / 2);
                     if (progress < 0) progress = 0;
                     if (progress > 1) progress = 1;
 
-                    // 使用缓动函数 easeOutQuad: 1 - (1-x)*(1-x) 让它减速
-                    // 或者更简单的减速感觉: 
+                    // 使用缓动函数 easeOutQuad 模拟减速
                     const ease = 1 - Math.pow(1 - progress, 2); 
 
                     // 严格按照进度计算位置
@@ -332,7 +343,6 @@
                 if (this.isBig) {
                     ctx.beginPath();
                     ctx.moveTo(this.x, this.y);
-                    // 拖尾向下
                     ctx.lineTo(this.x, this.y + 30); 
                     ctx.strokeStyle = `rgba(${this.color}, 0.5)`;
                     ctx.lineWidth = 4;
@@ -464,18 +474,18 @@
                     setTimeout(() => {
                         ui.msgBox.style.transition = "opacity 2.5s ease";
                         ui.msgBox.style.opacity = 1;
-                    }, 200); // 稍微延后一点点，让烟花先炸开
+                    }, 200); 
                 }
             }
 
             // === 狂欢模式：持续放烟花 ===
             if (isCelebration) {
-                // 每帧有 10% 概率发射一枚新烟花，形成弹幕效果
+                // 每帧有 10% 概率发射一枚新烟花
                 if (Math.random() < 0.1) {
-                    const sx = Math.random() * width; // 随机底部起点
+                    const sx = Math.random() * width; 
                     const sy = height;
-                    const tx = Math.random() * width; // 随机爆炸点
-                    const ty = Math.random() * (height * 0.6); // 爆炸高度限制在上半屏
+                    const tx = Math.random() * width; 
+                    const ty = Math.random() * (height * 0.6); 
                     fireworks.push(new Firework(sx, sy, tx, ty, false));
                 }
             }
